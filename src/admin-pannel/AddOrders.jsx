@@ -22,6 +22,7 @@ const AddOrders = () => {
       try {
         const res = await axios.get('http://localhost:5000/api/products');
         setProductOptions(res.data);
+        console.error('Order saved successfully!');
       } catch (err) {
         console.error('Error fetching products:', err.message);
       }
