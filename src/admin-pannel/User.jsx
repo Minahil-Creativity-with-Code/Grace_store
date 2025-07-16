@@ -5,7 +5,7 @@ import { FaUser, FaRegUser, FaPlus } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 
-const products = [
+const users = [
   {
     name: 'User',
     role: 'Admin',
@@ -16,29 +16,29 @@ const products = [
     image: 'User.jpg'
   },
   {
-    name: 'User',
+    name: 'Areeba',
     role: 'Admin',
     profession: 'Fashion Designer',
     gender: 'Female',
-    email: 'user@example.com',
-    address: 'Lahore, Pakistan',
+    email: 'areeba@example.com',
+    address: 'Karachi, Pakistan',
     image: 'User.jpg'
   },
   {
-    name: 'User',
-    role: 'Admin',
-    profession: 'Fashion Designer',
+    name: 'Zoya',
+    role: 'Manager',
+    profession: 'Stylist',
     gender: 'Female',
-    email: 'user@example.com',
-    address: 'Lahore, Pakistan',
+    email: 'zoya@example.com',
+    address: 'Islamabad, Pakistan',
     image: 'User.jpg'
   },
   {
-    name: 'User',
+    name: 'Sana',
     role: 'Admin',
     profession: 'Fashion Designer',
     gender: 'Female',
-    email: 'user@example.com',
+    email: 'sana@example.com',
     address: 'Lahore, Pakistan',
     image: 'User.jpg'
   }
@@ -46,10 +46,19 @@ const products = [
 
 const User = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.profession.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="dashboard">
@@ -63,9 +72,9 @@ const User = () => {
         <h2>Admin Panel</h2>
         <nav>
           <ul>
-            <li><Link to='/dashboard' ><MdSpaceDashboard /> Dashboard</Link></li>
+            <li><Link to='/dashboard'><MdSpaceDashboard /> Dashboard</Link></li>
             <li><Link to='/products'><AiOutlineProduct /> Products</Link></li>
-            <Link to="/order"><MdBorderColor /> Orders</Link>
+            <li><Link to='/order'><MdBorderColor /> Orders</Link></li>
             <li><Link to='/customer'><FaUser /> Customers</Link></li>
             <li><Link to='/user' className="active"><FaRegUser /> User</Link></li>
           </ul>
@@ -82,7 +91,12 @@ const User = () => {
           <Link to='/addUser'>
             <button className="add-button"><FaPlus /> Add User</button>
           </Link>
-          <input type="text" placeholder="Search..." />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <div className="profile">
             <img src="/PROFILE.jpg" alt="user" />
             <Link to="/userprofile" className="user-route">
@@ -97,17 +111,21 @@ const User = () => {
         </section>
 
         <section className="products">
-          {products.map((product, index) => (
-            <div key={index} className="product">
-              <img src={product.image} alt={product.name} />
-              <h4>{product.name}</h4>
-              <p><strong>Role:</strong> {product.role}</p>
-              <p><strong>Profession:</strong> {product.profession}</p>
-              <p><strong>Gender:</strong> {product.gender}</p>
-              <p><strong>Email:</strong> {product.email}</p>
-              <p><strong>Address:</strong> {product.address}</p>
-            </div>
-          ))}
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user, index) => (
+              <div key={index} className="product">
+                <img src={user.image} alt={user.name} />
+                <h4>{user.name}</h4>
+                <p><strong>Role:</strong> {user.role}</p>
+                <p><strong>Profession:</strong> {user.profession}</p>
+                <p><strong>Gender:</strong> {user.gender}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Address:</strong> {user.address}</p>
+              </div>
+            ))
+          ) : (
+            <p>No users found.</p>
+          )}
         </section>
       </main>
     </div>

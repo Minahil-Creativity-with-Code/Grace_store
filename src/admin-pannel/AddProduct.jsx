@@ -21,37 +21,50 @@ const AddProduct = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const payload = {
-    name: productData.title,
-    prices: {
-      small: parseFloat(productData.price) - 2,
-      medium: parseFloat(productData.price),
-      large: parseFloat(productData.price) + 2
-    },
-    stockQuantity: parseInt(productData.stock),
-    category: productData.category,
-    description: productData.description,
-    image: "tshirt.jpg", // Or dynamically assign this
-    isCustomizable: true,
-    CustomizationDescription: "Upload your design or add text"
-  };
-  try {
-    const response = await axios.post('http://localhost:5000/api/products', payload, {
-      headers: {
-        'Content-Type': 'application/json',
+    const payload = {
+      name: productData.title,
+      prices: {
+        small: parseFloat(productData.price) - 2,
+        medium: parseFloat(productData.price),
+        large: parseFloat(productData.price) + 2
       },
-    });
+      stockQuantity: parseInt(productData.stock),
+      category: productData.category,
+      description: productData.description,
+      image: "tshirt.jpg", // Static for now
+      isCustomizable: true,
+      CustomizationDescription: "Upload your design or add text"
+    };
 
-    console.log('✅ Product added:', response.data);
-    alert('Product added successfully!');
-  } catch (error) {
-    console.error('❌ Error adding product:', error.response?.data || error.message);
-    alert('Something went wrong while adding the product.');
-  }
-};
+    try {
+      const response = await axios.post('http://localhost:5000/api/products', payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
+      console.log('✅ Product added:', response.data);
+      alert('Product added successfully!');
+
+      // ✅ Clear the form after successful submission
+      setProductData({
+        title: '',
+        description: '',
+        category: '',
+        price: '',
+        stock: '',
+        brand: '',
+        color: '',
+        size: '',
+        productImage: null,
+      });
+    } catch (error) {
+      console.error('❌ Error adding product:', error.response?.data || error.message);
+      alert('Something went wrong while adding the product.');
+    }
+  };
 
   return (
     <div className="signup-container">
@@ -126,7 +139,7 @@ const AddProduct = () => {
               onChange={handleChange}
               required
             />
-            <div></div> {/* Empty to keep grid layout aligned */}
+            <div></div> {/* Keep grid alignment */}
           </div>
 
           {/* Description */}

@@ -1,20 +1,44 @@
-// AdminProductPanel.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaEdit, FaEye, FaPlus, FaRegUser } from 'react-icons/fa';
 import { MdDelete, MdSpaceDashboard, MdBorderColor } from 'react-icons/md';
 import { AiOutlineProduct } from 'react-icons/ai';
-import { FaUserFriends } from 'react-icons/fa';  // or any other valid icon
-
-const products = [
-  { id: 1, image: '/Ad1.jpg', category: 'Summer Collection 2025', price: 250, stock: true },
-  { id: 2, image: '/Ad2.jpg', category: 'Winter Collection 2025', price: 180, stock: false },
-  { id: 3, image: '/Ad3.jpg', category: 'Gents', price: 120, stock: true },
-  { id: 4, image: '/Ad4.jpg', category: 'Party Wear', price: 280, stock: true },
-  { id: 5, image: '/B1.jpg', category: 'Home Decor', price: 200, stock: true },
-];
+import { FaUserFriends } from 'react-icons/fa';
 
 function AdminProductPanel() {
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Fetch products on mount
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = () => {
+    axios.get('http://localhost:5000/api/products')
+      .then(res => setProducts(res.data))
+      .catch(err => console.error('Error fetching products:', err));
+  };
+
+  const handleDelete = (id) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
+
+    axios.delete(`http://localhost:5000/api/products/${id}`)
+      .then(() => {
+        setProducts(prev => prev.filter(p => p._id !== id)); // remove from UI
+      })
+      .catch(err => {
+        console.error('Failed to delete product:', err);
+        alert('Error deleting product.');
+      });
+  };
+
+  // Filter products by name
+  const filteredProducts = products.filter(product =>
+    product.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="admin-panel">
       <aside className="sidebar">
@@ -36,8 +60,14 @@ function AdminProductPanel() {
           </Link>
         </div>
 
+        {/* Search Filter */}
         <div className="filters">
-          <input type="text" placeholder="Search products" />
+          <input
+            type="text"
+            placeholder="Search products by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <select><option>Category</option></select>
           <select><option>Price</option></select>
           <select><option>Quantity in Stock</option></select>
@@ -48,29 +78,25 @@ function AdminProductPanel() {
             <tr>
               <th>Product</th>
               <th>Category</th>
-              <th>Price</th>
+              <th>Price (Medium)</th>
               <th>Quantity in Stock</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {products.map(product => (
-              <tr key={product.id}>
+            {filteredProducts.map(product => (
+              <tr key={product._id}>
                 <td className="product-info">
-                  <img src={product.image} alt={product.category} />
-                  <span>{product.category}</span>
+                  <img src={product.image || '/default.jpg'} alt={product.name} />
+                  <span>{product.name}</span>
                 </td>
                 <td>{product.category}</td>
-                <td>${product.price}</td>
-                <td>
-                  <span className={product.stock ? 'in-stock' : 'out-stock'}>
-                    {product.stock ? 'In Stock' : 'Out of Stock'}
-                  </span>
-                </td>
+                <td>${product.prices?.medium ?? '-'}</td>
+                <td>{product.stockQuantity}</td>
                 <td className="actions">
                   <button><FaEdit /> Edit</button>
-                  <button><MdDelete /> Delete</button>
-                  <button><FaEye /> View</button>
+                  <button onClick={() => handleDelete(product._id)}><MdDelete /> Delete</button>
+                  <Link to= "/viewProduct"><button><FaEye /> View</button></Link>
                 </td>
               </tr>
             ))}

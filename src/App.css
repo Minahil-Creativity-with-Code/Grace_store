@@ -2174,3 +2174,100 @@ textarea{
 .home-button:hover {
   background-color: #ff9100;
 }
+/* ViewProduct */
+.view-product-wrapper {
+  background-color: #121212;
+  color: #fff;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.view-product {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  background: #1e1e1e;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+}
+
+.main-image-only img {
+  width: 320px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid orange;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-details h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.ratings {
+  color: gold;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  color: orange;
+  margin-bottom: 0.5rem;
+}
+
+.stock.in-stock {
+  color: lightgreen;
+}
+
+.stock.out-stock {
+  color: red;
+}
+
+.short-desc {
+  margin: 1rem 0;
+  color: #ddd;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.quantity-selector button {
+  width: 30px;
+  height: 30px;
+  background: orange;
+  color: #000;
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quantity-selector input {
+  width: 40px;
+  text-align: center;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.expandable-description h4 {
+  margin-top: 1rem;
+  color: orange;
+}
+
+.expandable-description p {
+  color: #ccc;
+  line-height: 1.5;
+}

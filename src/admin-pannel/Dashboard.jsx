@@ -5,14 +5,15 @@ import { FaPerson } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegUser } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-const products = [
+
+const allProducts = [
   { name: 'Bedsheets', price: '$180.00', image: '/B1.jpg' },
   { name: 'Fashion Winter Dress', price: '$130.00 - $150.00', image: '/card1.jpg' },
   { name: 'Party Wear', price: '$130.00 - $150.00', image: '/card4.jpg' },
   { name: 'Fashion Summer Dress', price: '$140.00 - $160.00', image: '/Ad1.jpg' }
 ];
 
-const transactions = [
+const allTransactions = [
   { receiver: 'Tesco Market', type: 'Shopping', date: '11 Dec 2020', amount: '$75.67' },
   { receiver: 'ElectroMen Market', type: 'Shopping', date: '14 Dec 2020', amount: '$250.00' },
   { receiver: 'Fiorgio Restaurant', type: 'Food', date: '20 Dec 2020', amount: '$95.00' },
@@ -23,10 +24,23 @@ const transactions = [
 
 const Dashboard = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  // Filter products
+  const filteredProducts = allProducts.filter(product =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Filter transactions
+  const filteredTransactions = allTransactions.filter(transaction =>
+    transaction.receiver.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    transaction.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    transaction.amount.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="dashboard">
@@ -44,7 +58,7 @@ const Dashboard = () => {
             <Link to='/products'><AiOutlineProduct /> Products</Link>
             <Link to='/order'><MdBorderColor /> Orders</Link>
             <Link to='/customer'><FaPerson /> Customers</Link>
-             <Link to='/user'><FaRegUser />User</Link>
+            <Link to='/user'><FaRegUser /> User</Link>
           </ul>
         </nav>
         <div className="support">
@@ -56,15 +70,18 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="content">
         <header>
-          <input type="text" placeholder="Search..." />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <div className="profile">
-            <div className="profile">
-              <img src="/PROFILE.jpg" alt="user" />
-              <Link to="/userprofile" className="user-route">
-                <span>Username</span>
-              </Link>
-              <small>Fashion Designer</small>
-            </div>
+            <img src="/PROFILE.jpg" alt="user" />
+            <Link to="/userprofile" className="user-route">
+              <span>Username</span>
+            </Link>
+            <small>Fashion Designer</small>
           </div>
         </header>
 
@@ -73,13 +90,17 @@ const Dashboard = () => {
         </section>
 
         <section className="products">
-          {products.map((product, index) => (
-            <div key={index} className="product">
-              <img src={product.image} alt={product.name} />
-              <h4>{product.name}</h4>
-              <p>{product.price}</p>
-            </div>
-          ))}
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product, index) => (
+              <div key={index} className="product">
+                <img src={product.image} alt={product.name} />
+                <h4>{product.name}</h4>
+                <p>{product.price}</p>
+              </div>
+            ))
+          ) : (
+            <p>No products found.</p>
+          )}
         </section>
 
         <section className="transactions">
@@ -89,19 +110,23 @@ const Dashboard = () => {
               <tr>
                 <th>Receiver</th>
                 <th>Type</th>
-                {/* <th>Date</th> */}
                 <th>Amount</th>
               </tr>
             </thead>
             <tbody>
-              {transactions.map((t, index) => (
-                <tr key={index}>
-                  <td>{t.receiver}</td>
-                  <td>{t.type}</td>
-                  {/* <td>{t.date}</td> */}
-                  <td>{t.amount}</td>
+              {filteredTransactions.length > 0 ? (
+                filteredTransactions.map((t, index) => (
+                  <tr key={index}>
+                    <td>{t.receiver}</td>
+                    <td>{t.type}</td>
+                    <td>{t.amount}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3">No transactions found.</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </section>
