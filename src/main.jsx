@@ -30,6 +30,7 @@ import User from './admin-pannel/User';
 import AddUser from './admin-pannel/AddUser';
 import AddOrders from './admin-pannel/AddOrders';
 import ViewProduct from './admin-pannel/ViewProduct';
+import ViewUser from "./admin-pannel/ViewUser";
 
 const router = createBrowserRouter([
   // Public Routes
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
   { path: 'addUser', element: <AddUser /> },
   { path: 'addOrders', element: <AddOrders /> },
 { path: 'viewProduct', element: <ViewProduct /> },
+{ path: 'viewUser', element: <ViewUser /> },
 
   // 404 - Catch-all route
   { path:"*" , element : <Error /> }

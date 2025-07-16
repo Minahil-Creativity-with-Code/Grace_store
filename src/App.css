@@ -2271,3 +2271,71 @@ textarea{
   color: #ccc;
   line-height: 1.5;
 }
+/* ViewUser  */
+.view-user-wrapper {
+  background-color: #121212;
+  color: #fff;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.view-user {
+  display: flex;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: auto;
+  background: #1e1e1e;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+  margin-top: 50px;
+}
+
+.user-image img {
+  width: 280px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid orange;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-details h2 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.user-role {
+  font-size: 1.1rem;
+  color: orange;
+  margin-bottom: 1rem;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+  color: #ccc;
+}
+
+.status.active {
+  color: lightgreen;
+  font-weight: bold;
+}
+
+.status.inactive {
+  color: red;
+  font-weight: bold;
+}
+
+.user-bio h4 {
+  margin-top: 1.2rem;
+  color: orange;
+}
+
+.user-bio p {
+  color: #ddd;
+  line-height: 1.5;
+}

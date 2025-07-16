@@ -109,11 +109,11 @@ const User = () => {
         <section className="greeting">
           <h1>Dashboard</h1>
         </section>
-
+      
         <section className="products">
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user, index) => (
-              <div key={index} className="product">
+              <Link to = '/viewUser' className='user-route'><div key={index} className="product">
                 <img src={user.image} alt={user.name} />
                 <h4>{user.name}</h4>
                 <p><strong>Role:</strong> {user.role}</p>
@@ -121,7 +121,7 @@ const User = () => {
                 <p><strong>Gender:</strong> {user.gender}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Address:</strong> {user.address}</p>
-              </div>
+              </div></Link>
             ))
           ) : (
             <p>No users found.</p>
